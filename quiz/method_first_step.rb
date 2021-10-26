@@ -10,7 +10,34 @@
 # - 1. 実行するとhiインスタンスメソッドを定義するadd_hiメソッドを定義すること
 
 class F1
+	define_method :hello do
+		"hello"
+	end
+
+	define_singleton_method :world do
+		"world"
+	end
+
+	def method_missing(method, *args)
+		"NoMethodError"
+	end
+
+	def respond_to_missing?(method, include_private = false)
+		true
+	end
 end
 
 class F2
+	def add_hi
+		def hi
+		end
+	end
 end
+
+f1 = F1.new
+puts f1.hello
+puts f1.world
+puts f1.aaa
+puts f1.respond_to?(:hello)
+puts f1.respond_to?(:aaa)
+
