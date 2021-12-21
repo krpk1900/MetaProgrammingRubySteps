@@ -3,6 +3,9 @@
 #    実行例: MyMath.new.two_times { 2 } #=> 4
 
 class MyMath
+  def two_times
+    yield * 2
+  end
 end
 
 # 2. AcceptBlockクラスにcallクラスメソッドが予め定義されており、このメソッドがブロックをとるとします。
@@ -10,12 +13,19 @@ end
 #    このメソッドを、下で用意されているMY_LAMBDAをブロック引数として渡して実行してみてください。
 #    AcceptBlockクラスは問題側で用意している(テスト中に実装している)ため実装の必要はありません。
 
+# アローで書くことでlambdaになる
 MY_LAMBDA = -> { 3 }
+# &を付けることでブロックに変換してから実行される
+AcceptBlock.call(&MY_LAMBDA)
 
 # 3. MyBlockクラスにblock_to_procインスタンスメソッドを定義しましょう。block_to_procインスタンスメソッドはブロックを受け取り、
 #    そのブロックをProcオブジェクトにしたものを返します
 
 class MyBlock
+  # &を付けることでブロックをProcオブジェクトに変換する
+  def block_to_proc(&block)
+    block
+  end
 end
 
 # 4. MyClosureクラスにincrementインスタンスメソッドを定義しましょう。このincrementメソッドは次のように数値を1ずつインクリメントして返します
@@ -32,4 +42,9 @@ end
 #    さらなる制限として、カウンターとして利用する変数はローカル変数を利用してください(これはテストにはないですが頑張ってローカル変数でテストを通るようにしてみてください)
 
 class MyClosure
+  count = 0
+  # フラットスコープ
+  define_method :increment do
+    count = count + 1
+  end
 end
